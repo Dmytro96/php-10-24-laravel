@@ -22,3 +22,4 @@ yarn-error.log
 /.vscode
 /.zed
 _ide_*.php
+laradumps.yaml

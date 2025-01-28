@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('title')->unique();
             $table->string('SKU', 35)->unique();
-            $table->text('description')->unique();
+            $table->text('description')->nullable();
             $table->float('price')->unsigned()->startingValue(1);
             $table->unsignedTinyInteger('discount')->nullable();
             $table->unsignedSmallInteger('quantity')->default(0);
-            $table->text('image');
+            $table->text('thumbnail');
             
             $table->timestamps();
             
