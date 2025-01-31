@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,4 +24,12 @@ class CategoryFactory extends Factory
         
         return compact('name', 'slug');
     }
+    
+    public function withParent(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'parent_id' => Category::all()?->random()?->id,
+        ]);
+    }
+    
 }
