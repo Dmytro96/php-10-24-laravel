@@ -24,6 +24,6 @@ class CategoriesAndProductsSeeder extends Seeder
         Category::factory(2)->hasProducts(3)->create();
         
         Category::factory(2)->withParent()->create();
-        Category::factory(2)->withParent()->hasProducts(2)->create();
+        Category::factory(10)->withParent()->hasProducts(2)->create();
     }
 }
