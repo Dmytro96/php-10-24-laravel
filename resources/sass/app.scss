@@ -8,3 +8,14 @@
 @import 'bootstrap/scss/bootstrap';
 
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+
+.images-wrapper-item {
+  position: relative;
+
+  &-remove {
+    position: absolute;
+    right: 0;
+    top: -5%;
+    border-radius: 100%;
+  }
+}
