@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\ImageObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $path
@@ -28,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+#[ObservedBy(ImageObserver::class)]
 class Image extends Model
 {
     use HasFactory;
@@ -37,5 +44,29 @@ class Image extends Model
     public function imageble(): MorphTo
     {
         return $this->morphTo();
+    }
+    
+    public function url(): Attribute
+    {
+        return Attribute::get(function () {
+            return Storage::url($this->attributes['path']);
+        });
+    }
+    
+    public function setPathAttribute(array $pathData): void
+    {
+        /**
+         *  @var \Illuminate\Http\UploadedFile $file
+         */
+        $file = $pathData['image'];
+        $fileName = Str::slug(microtime());
+        $filePath = $pathData['path'] . "/$fileName" . $file->getClientOriginalName();
+        
+        ds($filePath)->label('File Path');
+        
+        Storage::put($filePath, File::get($file));
+        Storage::setVisibility($filePath, 'public');
+        
+        $this->attributes['path'] = $filePath;
     }
 }

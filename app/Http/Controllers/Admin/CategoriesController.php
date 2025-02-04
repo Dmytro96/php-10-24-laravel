@@ -81,9 +81,10 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        $this->middleware("permission:" . CategoryEnum::DELETE->value);
         
         try {
+            $this->middleware("permission:" . CategoryEnum::DELETE->value);
+
             Category::where('parent_id', $category->id)->update(['parent_id' => null]);
             
             $category->delete();
