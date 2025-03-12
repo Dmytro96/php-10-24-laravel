@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -61,8 +60,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create(
+        $user = User::create(
             $this->validator($data)->validated()
-        )->assignRole(RoleEnum::CUSTOMER->value);
+        );
+
+        $user->assignRole(RoleEnum::CUSTOMER->value);
+        
+        return $user;
     }
 }
