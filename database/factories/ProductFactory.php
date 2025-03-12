@@ -31,7 +31,7 @@ class ProductFactory extends Factory
             'price' => fake()->randomFloat(2, 10, 200),
             'discount' => fake()->optional()->numberBetween(10, 85),
             'quantity' => fake()->numberBetween(0, 50),
-            'thumbnail' => $this->generateImage($slug),
+            'thumbnail' => '',
         ];
     }
     
@@ -53,5 +53,20 @@ class ProductFactory extends Factory
             dir: Storage::path($dirName),
             isFullPath: false,
         );
+    }
+    
+    public function withTitle(string $title): static
+    {
+        return $this->state(fn(array $attributes) => ([
+            'title' => $title,
+            'slug' => Str::slug($title),
+        ]));
+    }
+    
+    public function withThumbnail(): static
+    {
+        return $this->state(fn(array $attributes) => ([
+            'thumbnail' => $this->generateImage($attributes['slug']),
+        ]));
     }
 }

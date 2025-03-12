@@ -15,7 +15,7 @@ class UserCreateRequest extends FormRequest
         return true;
     }
     
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'це поле обовʼязкове',

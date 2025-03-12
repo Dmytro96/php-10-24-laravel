@@ -7,12 +7,16 @@ use App\Http\Requests\Admin\Products\EditRequest;
 use App\Models\Product;
 use App\Repositories\Contracts\ImagesRepositoryContract;
 use App\Repositories\Contracts\ProductsRepositoryContract;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Throwable;
 
 class ProductsRepository implements ProductsRepositoryContract
 {
+    const PER_PAGE = 10;
+
     public function __construct(protected ImagesRepositoryContract $imagesRepository)
     {
     }
@@ -25,8 +29,7 @@ class ProductsRepository implements ProductsRepositoryContract
             $data = $this->formRequestData($request);
             $product = Product::create($data['attributes']);
             $this->updateRelationData($product, $data);
-            
-            DB::commit();
+                        DB::commit();
             
             return $product;
         } catch (Throwable $th) {
@@ -84,5 +87,23 @@ class ProductsRepository implements ProductsRepositoryContract
             $data['images'],
             $product->imagesFolderPath(),
         );
+    }
+    
+    public function paginate(Request $request)
+    {
+        $category = $request->get('category');
+        $products = Product::with('categories')
+            ->select('products.*')
+            ->orderBy('id')
+            ->when(
+                $category,
+                function (Builder $query) use ($category) {
+                    $query->whereHas('categories', function (Builder $query) use ($category) {
+                        $query->where('category_id', $category);
+                    });
+                }
+            );
+        
+        return $products->paginate($request->get('per_page', self::PER_PAGE));
     }
 }
