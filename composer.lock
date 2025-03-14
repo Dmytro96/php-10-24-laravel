@@ -8,28 +8,28 @@
     "packages": [
         {
             "name": "anayarojo/shoppingcart",
-            "version": "4.2.3",
+            "version": "4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anayarojo/laravel-shopping-cart.git",
-                "reference": "96e0f3c88cbb5ec2c28e09b1e480e28103fcbe1e"
+                "reference": "776023ad546b7b54a680f783b84cc55bc3fa1a77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anayarojo/laravel-shopping-cart/zipball/96e0f3c88cbb5ec2c28e09b1e480e28103fcbe1e",
-                "reference": "96e0f3c88cbb5ec2c28e09b1e480e28103fcbe1e",
+                "url": "https://api.github.com/repos/anayarojo/laravel-shopping-cart/zipball/776023ad546b7b54a680f783b84cc55bc3fa1a77",
+                "reference": "776023ad546b7b54a680f783b84cc55bc3fa1a77",
                 "shasum": ""
             },
             "require": {
-                "illuminate/events": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11",
-                "illuminate/session": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11",
-                "illuminate/support": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11",
+                "illuminate/events": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11||^12.0",
+                "illuminate/session": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11||^12.0",
+                "illuminate/support": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11||^12.0",
                 "nesbot/carbon": "~1.20||^1.26.3||^2.0||^3.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^3.4|^4.0|^5.0|^6.0|^9.0",
-                "phpunit/phpunit": "~5.0||~6.0||~7.0||~8.0||~9.0||~10.0"
+                "orchestra/testbench": "^3.4|^4.0|^5.0|^6.0|^9.0|^10.0",
+                "phpunit/phpunit": "~5.0||~6.0||~7.0||~8.0||~9.0||~10.0||~11.0"
             },
             "suggest": {
                 "gloudemans/notify": "Simple flash notifications for Laravel"
@@ -77,9 +77,10 @@
                 "shoppingcart"
             ],
             "support": {
-                "source": "https://github.com/anayarojo/laravel-shopping-cart/tree/4.2.3"
+                "issues": "https://github.com/anayarojo/laravel-shopping-cart/issues",
+                "source": "https://github.com/anayarojo/laravel-shopping-cart/tree/4.2.4"
             },
-            "time": "2024-03-19T21:32:39+00:00"
+            "time": "2025-03-05T22:20:00+00:00"
         },
         {
             "name": "appslabke/lara-izitoast",
