@@ -20,19 +20,19 @@
                 <div class="col-12 col-sm-6">Price:</div>
                 <div class="col-12 col-sm-6">{{ $product->finalPrice }} $</div>
             </div>
-            {{--            @else--}}
-            {{--                <div class="row">--}}
-            {{--                    <div class="col-12">--}}
-            {{--                        Product with options--}}
-            {{--                    </div>--}}
-            {{--                </div>--}}
-            {{--            @endif--}}
+
+            <div class="row">
+                <div class="col-12 col-sm-6">Price:</div>
+                <div class="col-12 col-sm-6">{{ $product->finalPrice }} $</div>
+            </div>
+
         </div>
         <div class="card-footer">
-            {{--            @if($product->isSimple)--}}
-            {{--                <a href="#" class="btn btn-outline-success my-2">Buy</a>--}}
-            {{--            @endif--}}
-            <a href="{{ route('products.show', $product) }}" class="btn btn-outline-info my-2">Show</a>
+            <div class="btn-group btn-group-sm gap-1 w-100 d-flex align-items-center justify-content-between"
+                 role="group">
+                <a href="{{ route('products.show', $product) }}" class="btn btn-outline-info my-2">Show</a>
+                <button class="btn btn-outline-success product-card-buy" data-action="{{ route('ajax.cart.add', $product) }}">Buy</button>
+            </div>
         </div>
     </div>
 </div>
