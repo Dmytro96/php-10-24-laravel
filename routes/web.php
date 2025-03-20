@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Ajax\Payments\PaypalController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CheckoutController;
@@ -40,4 +41,10 @@ Route::prefix('ajax')->name('ajax.')->group(function () {
     });
     
     Route::post('{product}', App\Http\Controllers\Ajax\AddToCartController::class)->name('cart.add');
+    
+    Route::prefix('paypal')->name('paypal.')->group(function () {
+        Route::post('order', [PaypalController::class, 'create'])->name('order.create');
+        Route::post('order/{vendorOrderId}/capture', [PaypalController::class, 'capture'])->name('order.capture');
+    });
 });
+
