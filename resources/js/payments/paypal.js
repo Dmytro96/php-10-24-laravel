@@ -34,7 +34,7 @@ paypal.Buttons({
         height: 40
     },
 
-    onInit: function(data, actions) {
+    onInit: function (data, actions) {
         actions.disable()
 
         $(document).on('change', selectors.form, function () {
@@ -45,7 +45,7 @@ paypal.Buttons({
         })
     },
 
-    onClick: function(data, actions) {
+    onClick: function (data, actions) {
         if (isEmptyFields()) {
             iziToast.warning({
                 title: 'Please fill an empty fields',
@@ -75,8 +75,10 @@ paypal.Buttons({
 
                 iziToast.success({
                     title: 'Order was created!',
-                    position: 'topRight'
-                    // onClosing => thank you page
+                    position: 'topRight',
+                    onClosing() {
+                        window.location.href = `/orders/${orderData.orderId}/thank-you`
+                    }
                 })
 
                 console.log('Capture result', orderData, JSON.stringify(orderData, null, 2))

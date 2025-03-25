@@ -6,7 +6,7 @@ use App\Enums\PaymentSystemEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateOrderRequest;
 use App\Repositories\OrderRepository;
-use App\Repositories\PaypalService;
+use App\Services\PaypalService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\DB;
 
@@ -56,9 +56,9 @@ class PaypalController extends Controller
         try {
             DB::beginTransaction();
             
-            $paymentStatus = $this->paypalService->capture();
+            $paymentStatus = $this->paypalService->capture($vendorOrderId);
             
-            $order = $this->orderRepository->setTransaction(
+            $this->orderRepository->setTransaction(
                 $vendorOrderId,
                 PaymentSystemEnum::PayPal,
                 $paymentStatus,
@@ -68,7 +68,9 @@ class PaypalController extends Controller
             
             DB::commit();
             
-            return response()->json($order);
+            return response()->json([
+                'orderId' => $vendorOrderId,
+            ]);
             
         } catch (\Throwable $exception) {
             DB::rollBack();

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services;
 
 use App\Enums\TransactionStatusesEnum;
+use App\Services\Contracts\PaypalServiceContract;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Srmklive\PayPal\Services\PayPal;
 
-class PaypalService implements Contracts\PaypalServiceContract
+class PaypalService implements PaypalServiceContract
 {
     protected Paypal $paypal;
     
@@ -32,7 +33,13 @@ class PaypalService implements Contracts\PaypalServiceContract
     
     public function capture(string $vendorOrderId): TransactionStatusesEnum
     {
-        return TransactionStatusesEnum::Pending;
+        $result = $this->paypal->capturePaymentOrder($vendorOrderId);
+        
+        return match ($result['status']) {
+            'COMPLETED', 'APPROVED' => TransactionStatusesEnum::Success,
+            'CREATED', 'SAVED' => TransactionStatusesEnum::Pending,
+            default => TransactionStatusesEnum::Cancelled,
+        };
     }
     
     protected function buildOrderRequestData(): array
@@ -40,9 +47,15 @@ class PaypalService implements Contracts\PaypalServiceContract
         $cart = Cart::instance('cart');
         $currencyCode = config('paypal.currency');
         $items = [];
+        $totalTax = 0;
+        $itemTotal = 0;
         
         $cart->content()
-            ->each(function ($item) use (&$items, $currencyCode) {
+            ->each(function ($item) use (&$items, $currencyCode, &$totalTax, &$itemTotal) {
+                $itemTax = round($item->price * $item->taxRate / 100, 2);
+                $totalTax += $itemTax * $item->qty;
+                $itemTotal += $item->price * $item->qty;
+                
                 $items[] = [
                     'name' => $item->name,
                     'quantity' => $item->qty,
@@ -55,26 +68,26 @@ class PaypalService implements Contracts\PaypalServiceContract
                     ],
                     'tax' => [
                         'currency_code' => $currencyCode,
-                        'value' => round($item->price / 100 * $item->taxRate, 2),
+                        'value' => number_format($itemTax, 2),
                     ],
                 ];
             });
-
+        
         return [
             'intent' => 'CAPTURE',
             'purchase_units' => [
                 [
                     'amount' => [
                         'currency_code' => $currencyCode,
-                        'value' => $cart->total(),
+                        'value' => number_format($itemTotal + $totalTax, 2), // Розраховуємо amount.value вручну
                         'breakdown' => [
                             'item_total' => [
                                 'currency_code' => $currencyCode,
-                                'value' => $cart->subtotal(),
+                                'value' => number_format($itemTotal, 2),
                             ],
                             'tax_total' => [
                                 'currency_code' => $currencyCode,
-                                'value' => $cart->tax(),
+                                'value' => number_format($totalTax, 2),
                             ],
                         ],
                     ],
@@ -82,5 +95,4 @@ class PaypalService implements Contracts\PaypalServiceContract
                 ],
             ],
         ];
-    }
-}
+    }}
