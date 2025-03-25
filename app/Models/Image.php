@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\TFactory|null $use_factory
  * @property-read Model|\Eloquent $imageble
+ * @property-read mixed $url
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image query()
@@ -61,8 +62,6 @@ class Image extends Model
         $file = $pathData['image'];
         $fileName = Str::slug(microtime());
         $filePath = $pathData['path'] . "/$fileName" . $file->getClientOriginalName();
-        
-        ds($filePath)->label('File Path');
         
         Storage::put($filePath, File::get($file));
         Storage::setVisibility($filePath, 'public');

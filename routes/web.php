@@ -4,6 +4,7 @@ use App\Http\Controllers\Ajax\Payments\PaypalController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Pages\ThankYouController;
 use App\Http\Controllers\ProductsController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Auth::routes();
 Route::resource('products', ProductsController::class)->only(['index', 'show']);
 Route::resource('categories', CategoriesController::class)->only(['index', 'show']);
 
+Route::get('/orders/{vendor_order_id}/thank-you', ThankYouController::class);
 Route::get('checkout', CheckoutController::class)->name('checkout');
 
 Route::name('cart.')->prefix('cart')->group(function () {
