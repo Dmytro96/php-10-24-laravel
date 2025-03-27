@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ajax\Payments;
 
 use App\Enums\PaymentSystemEnum;
+use App\Events\OrderCreatedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateOrderRequest;
 use App\Repositories\OrderRepository;
@@ -33,6 +34,8 @@ class PaypalController extends Controller
             
             $data['vendor_order_id'] = $paypalOrderId;
             $order = $this->orderRepository->create($data);
+
+            OrderCreatedEvent::dispatch($order);
             
             DB::commit();
             

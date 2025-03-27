@@ -6,7 +6,7 @@
         <div class="col-12">
             <h3 class="card-header">{{ __('Top categories') }}</h3>
             <div class="d-flex align-items-center justify-content-start gap-2 p-3 flex-wrap">
-{{--                @each('categories.parts.label', $categories, 'category')--}}
+                @each('categories.parts.label', $categories, 'category')
             </div>
             <h3 class="card-header">{{ __('Top products') }}</h3>
             <div class="d-flex align-items-center justify-content-start gap-2 p-3 flex-wrap">

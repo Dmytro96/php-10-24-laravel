@@ -17,13 +17,15 @@ class ThankYouController extends Controller
             $order = Order::with(['transaction', 'products'])
                 ->where('vendor_order_id', $vendorOrderId)->firstOrFail();
             
-            return view('orders.thank-you', compact('order'));
+            $showInvoiceButton = !!$order->user_id;
+            
+            return view('orders.thank-you', compact('order', 'showInvoiceButton'));
         } catch (\Throwable $throwable) {
             logs()->error('[ThankYouController::__invoke]' . $throwable->getMessage(), [
                 'exception' => $throwable,
                 'vendorOrderId' => $vendorOrderId,
             ]);
-            return redirect()->route('home');
+            return redirect()->route('/');
         }
     }
 }
